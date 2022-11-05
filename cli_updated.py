@@ -15,7 +15,7 @@ class Name(Field):
         return self._value
     
     @value.setter
-    def set_value(self, item):
+    def value(self, item):
         self._value = item
 
 
@@ -25,7 +25,7 @@ class Phone(Field):
         return self._value
     
     @value.setter
-    def set_value(self, item):
+    def value(self, item):
         if item.startswith("+38") and len(item) == 13:
             self._value = item
         else:
