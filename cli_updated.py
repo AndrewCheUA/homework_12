@@ -61,8 +61,8 @@ class Record:
             print("Phone was not added to record.") 
 
     def remove_phone(self, phone):
-        for i in self.phones:
-            if i.value == phone:
+        for phone in self.phones:
+            if phone.value == phone:
                 self.phones.remove(i)
 
     def add_birthday(self, date_input):
