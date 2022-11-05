@@ -84,7 +84,7 @@ class AddressBook(UserDict):
             self.data[record.name.value] = record
         elif len(x) == 2:
             y = Name(None)
-            y.set_value = x[1]
+            y.value = x[1]
             record = Record(name=y)
             self.data[record.name.value] = record
         else:
