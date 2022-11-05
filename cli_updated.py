@@ -1,7 +1,7 @@
 from collections import UserDict
 from datetime import datetime
 import pickle
-import pathlib
+
 
 
 class Field:
@@ -54,7 +54,7 @@ class Record:
         
     def add_phone(self, item):
         phone = Phone(None)
-        phone.set_value = item
+        phone.value = item
         if phone.value != None:
             self.phones.append(phone)
         else:
@@ -63,7 +63,7 @@ class Record:
     def remove_phone(self, phone):
         for phone in self.phones:
             if phone.value == phone:
-                self.phones.remove(i)
+                self.phones.remove(phone)
 
     def add_birthday(self, date_input):
         self.birthday = Birthday(None)
@@ -78,7 +78,7 @@ class AddressBook(UserDict):
         x = user_input.split()
         if len(x) == 3:
             y = Name(None)
-            y.set_value = x[1]
+            y.value = x[1]
             record = Record(name=y)
             record.add_phone(x[2])
             self.data[record.name.value] = record
