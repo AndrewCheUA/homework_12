@@ -38,7 +38,7 @@ class Birthday(Field):
         return self._value
     
     @value.setter
-    def set_value(self, item):
+    def value(self, item):
         try:
             user_date = item.split()
             birthday = datetime(year = int(user_date[0]), month = int(user_date[1]), day = int(user_date[2]))
@@ -52,47 +52,25 @@ class Record:
         self.name = name
         self.phones = []
         
-    def add_phone(self, item):
-        phone = Phone(None)
-        phone.value = item
-        if phone.value != None:
-            self.phones.append(phone)
-        else:
-            print("Phone was not added to record.") 
+    def add_phone(self, phone):
+        self.phones.append(phone) 
 
-    def remove_phone(self, phone):
+    def remove_phone(self, in_phone):
         for phone in self.phones:
-            if phone.value == phone:
+            if phone.value == in_phone:
                 self.phones.remove(phone)
 
     def add_birthday(self, date_input):
         self.birthday = Birthday(None)
-        self.birthday.set_value = date_input
+        self.birthday.value = date_input
         
     def show_all(self):
         print(self.phones)
         
        
 class AddressBook(UserDict):
-    def add_record(self, user_input):
-        x = user_input.split()
-        if len(x) == 3:
-            y = Name(None)
-            y.value = x[1]
-            record = Record(name=y)
-            record.add_phone(x[2])
-            self.data[record.name.value] = record
-        elif len(x) == 2:
-            y = Name(None)
-            y.value = x[1]
-            record = Record(name=y)
-            self.data[record.name.value] = record
-        else:
-            print("Incorrect command")
-        birthday_input = input("Would you like to set birthday for the contact? ")
-        if birthday_input.lower() == "yes":
-            date_input = input("Please enter birthday (year month day):")
-            record.add_birthday(date_input)
+    def add_record(self, record):
+        self.data[record.name.value] = record
     
     def days_to_birthday(self, birthday):
         current_date = datetime.today()
@@ -158,20 +136,40 @@ END_DICT = {'good bye':quit_f,
             'exit':quit_f}
 
 
-def main_cli(): 
+def main_cli():
     while True:
         user_input = input("Enter command: ")
         if user_input.lower() == "hello":
                 print("How can I help you?")
         
         elif user_input.lower().startswith("add"):
-            book.add_record(user_input)
+            x = user_input.split()
+            if len(x) == 3:
+                y = Name(None)
+                y.value = x[1]
+                record = Record(name=y)
+                phone = Phone(None)
+                phone.value = x[2]
+                record.add_phone(phone)
+            elif len(x) == 2:
+                y = Name(None)
+                y.value = x[1]
+                record = Record(name=y) 
+            else:
+                print("Incorrect command")
+            birthday_input = input("Would you like to set birthday for the contact? ")
+            if birthday_input.lower() == "yes":
+                date_input = input("Please enter birthday (year month day):")
+                record.add_birthday(date_input)
+            book.add_record(record)
             print("Record was added.")
             
         elif user_input.startswith("new phone"):
             name_ch = input("Please enter contact name: ")
-            phone = input("Please enter contact phone: ")
+            phone_in = input("Please enter contact phone: ")
             if name_ch in book:
+                phone = Phone(None)
+                phone.value = phone_in
                 book.get(name_ch).add_phone(phone)
                 print("Phone was added.")
             else:
@@ -191,8 +189,10 @@ def main_cli():
             old_phone = input("Please enter contact old phone: ")
             new_phone = input("Please enter contact new phone: ")
             if name_ch in book:
-                book.get(name_ch).remove(old_phone)
-                book.get(name_ch).add_phone(new_phone)
+                phone = Phone(None)
+                phone.value = new_phone
+                book.get(name_ch).remove_phone(old_phone)
+                book.get(name_ch).add_phone(phone)
                 print("Record was updated.")
             else:
                 print("No such contact in contacts list.")
